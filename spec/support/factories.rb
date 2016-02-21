@@ -13,22 +13,19 @@ FactoryGirl.define do
   end
 
   factory :song do
-    title #{Faker::Book.title}
-    artist #{Faker::Name.last_name}
+    title
+    artist
+  end
+
+  sequence :playlist_name do |n|
+    "Playlist #{n}"
+  end
+
+  factory :playlist do
+    name { generate(:playlist_name) }
+
+    factory :playlist_with_songs do
+      songs { create_list(:song, 3) }
+    end
   end
 end
-# FactoryGirl.define do
-#  factory :song do
-#    title   Faker::Book.title
-#  end
-# ​
-#  factory :artist do
-#    name         Faker::Name.name
-#    image_path   "http://cps-static.rovicorp.com/3/JPG_400/MI0003/146/MI0003146038.jpg"
-#  end
-# ​
-#  factory :artist_with_songs, :parent => :artist do |artist|
-#    artist.after(:create) do |artist|
-#      artist.songs << FactoryGirl.create(:song)
-#    end
-#  end

@@ -1,21 +1,13 @@
 require 'rails_helper'
 
-RSpec.feature "User can view index of playlists" do
-  scenario "playlist link takes user to the individual playlist to view songs" do
-
-    playlist = create(:playlist)
-    playlist2 = Playlist.create(name: "Blues")
-    playlist2.songs.create(title: "Luckiest Man")
+RSpec.feature "User views all playlists" do
+  scenario "they see the names of each playlist" do
+    playlists = create_list(:playlist_with_songs, 2)
 
     visit playlists_path
 
-    find_link("MyString").visible?
-    find_link("Blues").visible?
-
-    click_link("Blues")
-
-    expect(page).to have_content("Luckiest Man")
-    save_and_open_page
-    
+    playlists.each do |playlist|
+      expect(page).to have_link playlist.name, href: playlist_path(playlist)
+    end
   end
 end
